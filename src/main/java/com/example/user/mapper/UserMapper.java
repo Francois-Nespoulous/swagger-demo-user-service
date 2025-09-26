@@ -1,16 +1,15 @@
 package com.example.user.mapper;
 
-import com.example.user.domain.enums.BorrowStatus;
+import com.example.user.client.BorrowClient;
 import com.example.user.domain.enums.UserRole;
 import com.example.user.domain.model.User;
 import com.example.user.dto.in.CreateUserRequest;
 import com.example.user.dto.out.UserDto;
 import com.example.user.persistence.repository.entity.UserEntity;
-import com.example.user.repository.BorrowRepository;
 
 public class UserMapper {
-    public static User toDomain(UserEntity userEntity, BorrowRepository borrowRepository) {
-        int nbOfBooksBorrowed = borrowRepository.countBorrowedByUser_Id_AndStatusEquals(userEntity.getId(), BorrowStatus.ONGOING);
+    public static User toDomain(UserEntity userEntity, BorrowClient borrowClient) {
+        int nbOfBooksBorrowed = borrowClient.countBooksBorrowedByUser(userEntity.getId());
         return new User(
                 userEntity.getId(),
                 userEntity.getUsername(),
@@ -28,7 +27,7 @@ public class UserMapper {
                 0,
                 userEntity.getUserRole()
         );
-    }
+    } //TODO UserDto user != UserDto borrow ! user s'en fout du nombre de livre empruntés
 
     public static UserDto toDto(User user) {
         return new UserDto(

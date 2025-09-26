@@ -32,6 +32,12 @@ public class UserController {
         return UserMapper.toDto(user);
     }
 
+    @GetMapping("/user/username/{username}")
+    public UserDto getUserByUsername(@PathVariable String username) {
+        User user = userService.getUserByUsername(username);
+        return UserMapper.toDto(user);
+    }
+
     @PostMapping("/user/create")
     public UserDto createUser(@RequestBody CreateUserRequest createUserRequest) {
         User user = userService.createUser(createUserRequest);
